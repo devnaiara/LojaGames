@@ -1,6 +1,7 @@
 package com.lojagames.game.model;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -24,7 +25,7 @@ public class Categoria {
 	private String nome;
 
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
-    private List<Produto> produtos;
+    private List<Produto> produtos = new ArrayList<>();
 
     public Categoria() {
     }

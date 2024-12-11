@@ -1,5 +1,6 @@
 package com.lojagames.game.controller;
 
+import com.lojagames.game.model.Categoria;
 import com.lojagames.game.model.Produto;
 import com.lojagames.game.repository.CategoriaRepository;
 import com.lojagames.game.repository.ProdutoRepository;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/produtos")
@@ -41,12 +43,15 @@ public class ProdutoController {
 
     @PostMapping
     public ResponseEntity<Produto> create(@Valid @RequestBody Produto produto) {
-        if (!categoriaRepository.existsById(produto.getCategoria().getId())) {
+    	Optional<Categoria> categoria = categoriaRepository.findById(produto.getCategoria().getId());
+        if (!categoria.isPresent()) {
             return ResponseEntity.badRequest().build();
         }
+        produto.setCategoria(categoria.get());
+        Produto produtosalvo = produtoRepository.save(produto);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(produtoRepository.save(produto));
-    }
+                .body(produtosalvo);
+                }
 
     @PutMapping("/{id}")
     public ResponseEntity<Produto> update(@PathVariable Long id, @Valid @RequestBody Produto produto) {
