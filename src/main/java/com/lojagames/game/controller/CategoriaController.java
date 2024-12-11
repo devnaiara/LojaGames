@@ -30,20 +30,20 @@ public class CategoriaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Categoria> buscar(@PathVariable Long id) {
+    public ResponseEntity<Categoria> search(@PathVariable Long id) {
         return categoriaRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Categoria> adicionar(@Valid @RequestBody Categoria categoria) {
+    public ResponseEntity<Categoria> create(@Valid @RequestBody Categoria categoria) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(categoriaRepository.save(categoria));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Categoria> atualizar(@PathVariable Long id, @Valid @RequestBody Categoria categoria) {
+    public ResponseEntity<Categoria> update(@PathVariable Long id, @Valid @RequestBody Categoria categoria) {
         if (!categoriaRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
@@ -53,7 +53,7 @@ public class CategoriaController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> remover(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         if (!categoriaRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
